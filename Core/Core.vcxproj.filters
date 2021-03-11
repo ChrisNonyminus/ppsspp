@@ -88,6 +88,9 @@
     <Filter Include="Ext\libzip">
       <UniqueIdentifier>{0201ff27-4fa8-4cf3-bbb9-accfdc0c7046}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Vanguard">
+      <UniqueIdentifier>{bb82257f-ac2f-4a83-b77b-ee4c3ed11769}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ELF\ElfReader.cpp">
@@ -971,6 +974,21 @@
     <ClCompile Include="Debugger\WebSocket\InputBroadcaster.cpp">
       <Filter>Debugger\WebSocket</Filter>
     </ClCompile>
+    <ClCompile Include="..\Vanguard\VanguardClient.cpp">
+      <Filter>Vanguard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Vanguard\VanguardConfigLoader.cpp">
+      <Filter>Vanguard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Vanguard\VanguardSettings.cpp">
+      <Filter>Vanguard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Vanguard\ManagedWrapper.cpp">
+      <Filter>Vanguard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Vanguard\UnmanagedWrapper.cpp">
+      <Filter>Vanguard</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ELF\ElfReader.h">
@@ -1660,6 +1678,30 @@
     </ClInclude>
     <ClInclude Include="Debugger\WebSocket\InputBroadcaster.h">
       <Filter>Debugger\WebSocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\UnmanagedWrapper.h">
+      <Filter>Vanguard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\VanguardClient.h">
+      <Filter>Vanguard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\VanguardClientInitializer.h">
+      <Filter>Vanguard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\VanguardConfigLoader.h">
+      <Filter>Vanguard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\VanguardSettingsWrapper.h">
+      <Filter>Vanguard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\Helpers.hpp">
+      <Filter>Vanguard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\ManagedWrapper.h">
+      <Filter>Vanguard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Vanguard\ThreadLocalHelper.h">
+      <Filter>Vanguard</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -40,6 +40,7 @@
 #include "Core/Debugger/Breakpoints.h"
 #include "Core/MIPS/MIPS.h"
 #include "GPU/Debugger/Stepping.h"
+#include "../Vanguard/UnmanagedWrapper.h"
 
 #ifdef _WIN32
 #include "Common/CommonWindows.h"
@@ -233,6 +234,7 @@ void Core_RunLoop(GraphicsContext *ctx) {
 	}
 
 	while ((coreState == CORE_RUNNING || coreState == CORE_STEPPING) && GetUIState() == UISTATE_INGAME) {
+		UnmanagedWrapper::VANGUARD_CORESTEP();
 		UpdateRunLoop();
 		if (!windowHidden && !Core_IsStepping()) {
 			ctx->SwapBuffers();

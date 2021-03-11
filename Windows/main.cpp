@@ -75,6 +75,7 @@
 
 #include "Windows/WindowsHost.h"
 #include "Windows/main.h"
+#include <Vanguard/VanguardClientInitializer.h>
 
 
 // Nvidia OpenGL drivers >= v302 will check if the application exports a global
@@ -467,6 +468,7 @@ std::vector<std::wstring> GetWideCmdLine() {
 }
 
 static void WinMainInit() {
+	VanguardClientInitializer::Initialize();
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 	net::Init();  // This needs to happen before we load the config. So on Windows we also run it in Main. It's fine to call multiple times.
 

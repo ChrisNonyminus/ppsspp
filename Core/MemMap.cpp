@@ -45,7 +45,9 @@
 #include "Core/MIPS/JitCommon/JitBlockCache.h"
 #include "Core/MIPS/JitCommon/JitCommon.h"
 #include "UI/OnScreenDisplay.h"
-
+#include "../Vanguard/VanguardClientInitializer.h"
+#include "../Vanguard/UnmanagedWrapper.h"
+#include <Vanguard/VanguardClient.h>
 namespace Memory {
 
 // The base pointer to the auto-mirrored arena.
@@ -282,6 +284,8 @@ void MemoryMap_Shutdown(u32 flags) {
 }
 
 bool Init() {
+	VanguardClientUnmanaged::LOAD_GAME_START("IGNORE");
+	VanguardClientUnmanaged::LOAD_GAME_DONE();
 	// On some 32 bit platforms (like Android, iOS, etc.), you can only map < 32 megs at a time.
 	const static int MAX_MMAP_SIZE = 31 * 1024 * 1024;
 	_dbg_assert_msg_(g_MemorySize <= MAX_MMAP_SIZE * 3, "ACK - too much memory for three mmap views.");
