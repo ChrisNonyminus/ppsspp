@@ -122,7 +122,7 @@ getDefaultPartial() {
     partial->Set(VSPEC::OPENROMFILENAME, "IGNORE");
     partial->Set(VSPEC::OVERRIDE_DEFAULTMAXINTENSITY, 100000);
     partial->Set(VSPEC::SYNCSETTINGS, String::Empty);
-    partial->Set(VSPEC::MEMORYDOMAINS_BLACKLISTEDDOMAINS, gcnew cli::array<String ^>{});
+    partial->Set(VSPEC::MEMORYDOMAINS_BLACKLISTEDDOMAINS, gcnew cli::array<String ^>{"System Bus", "VRAM"});
     partial->Set(VSPEC::SYSTEM, "PSP");
     partial->Set(VSPEC::LOADSTATE_USES_CALLBACKS, true);
     partial->Set(VSPEC::EMUDIR, VanguardClient::emuDir);
