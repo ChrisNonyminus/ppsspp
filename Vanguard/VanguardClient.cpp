@@ -561,7 +561,7 @@ String^ PhysicalRAM::Name::get() {
 }
 
 long long PhysicalRAM::Size::get() {
-	return 0x02000000;
+	return 0x04000000;
 }
 
 int PhysicalRAM::WordSize::get() {
@@ -607,7 +607,7 @@ String^ KernelMemory::Name::get() {
 }
 
 long long KernelMemory::Size::get() {
-	return 0x02000000;
+	return 0x04000000;
 }
 
 int KernelMemory::WordSize::get() {
