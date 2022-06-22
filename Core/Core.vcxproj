@@ -137,6 +137,9 @@
   <PropertyGroup>
     <CustomBuildBeforeTargets>ResolveProjectReferences</CustomBuildBeforeTargets>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ManagedAssembly>true</ManagedAssembly>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -1328,8 +1331,8 @@
     <None Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RTCV\Source\Libraries\Common\RTCVCommon.csproj">
-      <Project>{9c5f1de4-eb35-405a-bf18-af4108190e8c}</Project>
+    <ProjectReference Include="..\..\RTCV\Source\Libraries\Common\Common.csproj">
+      <Project>{05897461-7420-48e0-bf1b-9e076ba12bb3}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\RTCV\Source\Libraries\CorruptCore\CorruptCore.csproj">
       <Project>{912cf45c-1bbc-4484-bd48-4dba306ffd19}</Project>

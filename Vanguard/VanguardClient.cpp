@@ -122,7 +122,7 @@ getDefaultPartial() {
     partial->Set(VSPEC::OPENROMFILENAME, "IGNORE");
     partial->Set(VSPEC::OVERRIDE_DEFAULTMAXINTENSITY, 100000);
     partial->Set(VSPEC::SYNCSETTINGS, String::Empty);
-    partial->Set(VSPEC::MEMORYDOMAINS_BLACKLISTEDDOMAINS, gcnew cli::array<String ^>{"System Bus", "VRAM"});
+    partial->Set(VSPEC::MEMORYDOMAINS_BLACKLISTEDDOMAINS, gcnew cli::array<String ^>{"Raw System Bus", "VRAM"});
     partial->Set(VSPEC::SYSTEM, "PSP");
     partial->Set(VSPEC::LOADSTATE_USES_CALLBACKS, true);
     partial->Set(VSPEC::EMUDIR, VanguardClient::emuDir);
@@ -369,6 +369,20 @@ public:
 		return "Kernel Memory";
 	}
 };
+public ref class UserMemory : RTCV::CorruptCore::IMemoryDomain {
+public:
+	property System::String^ Name { virtual System::String^ get(); }
+	property long long Size { virtual long long get(); }
+	property int WordSize { virtual int get(); }
+	property bool BigEndian { virtual bool get(); }
+	virtual unsigned char PeekByte(long long addr);
+	virtual cli::array<unsigned char>^ PeekBytes(long long address, int length);
+	virtual void PokeByte(long long addr, unsigned char val);
+	virtual String^ ToString() override
+	{
+		return "User Memory";
+	}
+};
 
 //public
 //    ref class VRAM : RTCV::CorruptCore::IMemoryDomain {
@@ -414,6 +428,7 @@ public:
 #define VRAM_SIZE 0x00200000;
 #define COMBINED_VRAM_SIZE 0x00800000; //sometimes the memory region is in a different spot so I'll just include all the spots it could be in
 #define PHYSICAL_RAM_OFFSET 0x08000000;
+#define USER_RAM_OFFSET 0x08800000;
 #define KERNEL_RAM_OFFSET 0x88000000;
 #define PSP2000_RAM_SIZE 0x04000000;
 #define COMBINED_PSP2000_RAM_SIZE 0x0FE00000;
@@ -607,7 +622,7 @@ String^ KernelMemory::Name::get() {
 }
 
 long long KernelMemory::Size::get() {
-	return 0x04000000;
+	return 0x800000;
 }
 
 int KernelMemory::WordSize::get() {
@@ -646,6 +661,53 @@ cli::array<unsigned char>^ KernelMemory::PeekBytes(long long address, int length
 	return bytes;
 }
 #pragma endregion
+
+#pragma region UserMemory
+String^ UserMemory::Name::get() {
+	return "User Memory";
+}
+
+long long UserMemory::Size::get() {
+	return 0x1800000;
+}
+
+int UserMemory::WordSize::get() {
+	return WORD_SIZE;
+}
+
+bool UserMemory::BigEndian::get() {
+	return BIG_ENDIAN;
+}
+
+unsigned char UserMemory::PeekByte(long long addr) {
+	//return ReadMem8(static_cast<u32>(addr));
+	if (addr < UserMemory::Size)
+	{
+		uint32_t address = addr + USER_RAM_OFFSET;
+		return ManagedWrapper::peekbyte(address);
+	}
+	else return 0;
+}
+
+void UserMemory::PokeByte(long long addr, unsigned char val) {
+	//WriteMem8(static_cast<u32>(addr), val);
+	if (addr < UserMemory::Size)
+	{
+		uint32_t address = addr + USER_RAM_OFFSET;
+		ManagedWrapper::pokebyte(address, val);
+	}
+	else return;
+}
+
+cli::array<unsigned char>^ UserMemory::PeekBytes(long long address, int length) {
+	cli::array<unsigned char>^ bytes = gcnew cli::array<unsigned char>(length);
+	for (int i = 0; i < length; i++) {
+		bytes[i] = PeekByte(address + i);
+	}
+	return bytes;
+}
+#pragma endregion
+
 //#pragma region VRAM
 //String ^ VRAM::Name::get() {
 //    return "VRAM";
@@ -752,12 +814,13 @@ static cli::array<MemoryDomainProxy^>^ GetInterfaces() {
     if (String::IsNullOrWhiteSpace(AllSpec::VanguardSpec->Get<String^>(VSPEC::OPENROMFILENAME)))
         return gcnew cli::array<MemoryDomainProxy^>(0);
 
-    cli::array<MemoryDomainProxy ^> ^ interfaces = gcnew cli::array<MemoryDomainProxy ^>(5);
+    cli::array<MemoryDomainProxy ^> ^ interfaces = gcnew cli::array<MemoryDomainProxy ^>(6);
 	interfaces[0] = (gcnew MemoryDomainProxy(gcnew SystemBus));
 	interfaces[1] = (gcnew MemoryDomainProxy(gcnew Scratchpad));
 	interfaces[2] = (gcnew MemoryDomainProxy(gcnew VRAM));
 	interfaces[3] = (gcnew MemoryDomainProxy(gcnew PhysicalRAM));
-	interfaces[4] = (gcnew MemoryDomainProxy(gcnew KernelMemory));
+	interfaces[4] = (gcnew MemoryDomainProxy(gcnew UserMemory));
+	interfaces[5] = (gcnew MemoryDomainProxy(gcnew KernelMemory));
     return interfaces;
 }
 

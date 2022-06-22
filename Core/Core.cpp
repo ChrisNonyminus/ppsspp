@@ -234,10 +234,10 @@ void Core_RunLoop(GraphicsContext *ctx) {
 	}
 
 	while ((coreState == CORE_RUNNING || coreState == CORE_STEPPING) && GetUIState() == UISTATE_INGAME) {
-		UnmanagedWrapper::VANGUARD_CORESTEP();
 		UpdateRunLoop();
 		if (!windowHidden && !Core_IsStepping()) {
 			ctx->SwapBuffers();
+			UnmanagedWrapper::VANGUARD_CORESTEP();
 
 			// Keep the system awake for longer than normal for cutscenes and the like.
 			const double now = time_now_d();
